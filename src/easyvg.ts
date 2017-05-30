@@ -2,7 +2,7 @@
 
 import {Point, Transformation} from 'matrix2';
 
-export class Element<Type extends SVGElement> {
+export class SvgElement<Type extends SVGElement> {
 	readonly nativeElement: Type;
 
   constructor (
@@ -25,18 +25,18 @@ export class Element<Type extends SVGElement> {
     return this.nativeElement.getAttributeNS(null, name);
   }
 
-  setAttr(name: string, value: any): Element<Type> {
+  setAttr(name: string, value: any): SvgElement<Type> {
     this.nativeElement.setAttributeNS(null, name, '' + value);
 
     return this;
   }
 
-  append(element: Element<SVGElement>): void {
+  append(element: SvgElement<SVGElement>): void {
     this.nativeElement.appendChild(element.nativeElement);
   }
 }
 
-export class GraphicElement extends Element<SVGGraphicsElement> {
+export class GraphicElement extends SvgElement<SVGGraphicsElement> {
 
   get transformation(): Transformation {
     let t = this.nativeElement.getCTM();
