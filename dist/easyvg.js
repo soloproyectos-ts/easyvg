@@ -11,8 +11,8 @@ var __extends = (this && this.__extends) || (function () {
 define(["require", "exports", "matrix2"], function (require, exports, matrix2_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var Element = (function () {
-        function Element(target, attributes) {
+    var SvgElement = (function () {
+        function SvgElement(target, attributes) {
             if (attributes === void 0) { attributes = {}; }
             if (typeof target == 'string') {
                 this.nativeElement = document.createElementNS('http://www.w3.org/2000/svg', target);
@@ -24,25 +24,25 @@ define(["require", "exports", "matrix2"], function (require, exports, matrix2_1)
                 this.setAttr(key, attributes[key]);
             }
         }
-        Element.prototype.getAttr = function (name) {
+        SvgElement.prototype.getAttr = function (name) {
             return this.nativeElement.getAttributeNS(null, name);
         };
-        Element.prototype.setAttr = function (name, value) {
+        SvgElement.prototype.setAttr = function (name, value) {
             this.nativeElement.setAttributeNS(null, name, '' + value);
             return this;
         };
-        Element.prototype.append = function (element) {
+        SvgElement.prototype.append = function (element) {
             this.nativeElement.appendChild(element.nativeElement);
         };
-        return Element;
+        return SvgElement;
     }());
-    exports.Element = Element;
-    var GraphicElement = (function (_super) {
-        __extends(GraphicElement, _super);
-        function GraphicElement() {
+    exports.SvgElement = SvgElement;
+    var SvgGraphicElement = (function (_super) {
+        __extends(SvgGraphicElement, _super);
+        function SvgGraphicElement() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        Object.defineProperty(GraphicElement.prototype, "transformation", {
+        Object.defineProperty(SvgGraphicElement.prototype, "transformation", {
             get: function () {
                 var t = this.nativeElement.getCTM();
                 return matrix2_1.Transformation.createFromValues(t.a, t.b, t.c, t.d, t.e, t.f);
@@ -50,12 +50,12 @@ define(["require", "exports", "matrix2"], function (require, exports, matrix2_1)
             enumerable: true,
             configurable: true
         });
-        return GraphicElement;
-    }(Element));
-    exports.GraphicElement = GraphicElement;
-    var Path = (function (_super) {
-        __extends(Path, _super);
-        function Path() {
+        return SvgGraphicElement;
+    }(SvgElement));
+    exports.SvgGraphicElement = SvgGraphicElement;
+    var SvgPath = (function (_super) {
+        __extends(SvgPath, _super);
+        function SvgPath() {
             var _this = _super.call(this, 'path') || this;
             _this._strokeColor = 'black';
             _this._strokeWidth = 2;
@@ -65,14 +65,15 @@ define(["require", "exports", "matrix2"], function (require, exports, matrix2_1)
                 .setAttr('fill', 'transparent');
             return _this;
         }
-        Path.prototype.moveTo = function (value) {
+        SvgPath.prototype.moveTo = function (value) {
             this.setAttr('d', [this.getAttr('d') || '', "M" + value.x + " " + value.y].join(' '));
             return this;
         };
-        Path.prototype.lineTo = function (value) {
+        SvgPath.prototype.lineTo = function (value) {
             this.setAttr('d', [this.getAttr('d') || '', "L" + value.x + " " + value.y].join(' '));
             return this;
         };
-        return Path;
-    }(GraphicElement));
+        return SvgPath;
+    }(SvgGraphicElement));
+    exports.SvgPath = SvgPath;
 });
