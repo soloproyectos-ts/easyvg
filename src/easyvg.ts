@@ -45,7 +45,7 @@ export class GraphicElement extends Element<SVGGraphicsElement> {
   }
 }
 
-class Path extends GraphicElement {
+export class Path extends GraphicElement {
   private _strokeColor = 'black';
   private _strokeWidth = 2;
 
