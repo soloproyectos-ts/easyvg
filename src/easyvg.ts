@@ -45,7 +45,7 @@ export class SvgGraphicElement extends SvgElement<SVGGraphicsElement> {
   }
 }
 
-export class Path extends SvgGraphicElement {
+export class SvgPath extends SvgGraphicElement {
   private _strokeColor = 'black';
   private _strokeWidth = 2;
 
@@ -58,7 +58,7 @@ export class Path extends SvgGraphicElement {
       .setAttr('fill', 'transparent');
   }
 
-  moveTo(value: Point): Path {
+  moveTo(value: Point): SvgPath {
     this.setAttr(
       'd', [this.getAttr('d') || '', `M${value.x} ${value.y}`].join(' ')
     );
@@ -66,7 +66,7 @@ export class Path extends SvgGraphicElement {
     return this;
   }
 
-  lineTo(value: Point): Path {
+  lineTo(value: Point): SvgPath {
     this.setAttr(
       'd', [this.getAttr('d') || '', `L${value.x} ${value.y}`].join(' ')
     );
