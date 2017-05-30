@@ -36,7 +36,7 @@ export class SvgElement<Type extends SVGElement> {
   }
 }
 
-export class GraphicElement extends SvgElement<SVGGraphicsElement> {
+export class SvgGraphicElement extends SvgElement<SVGGraphicsElement> {
 
   get transformation(): Transformation {
     let t = this.nativeElement.getCTM();
@@ -45,7 +45,7 @@ export class GraphicElement extends SvgElement<SVGGraphicsElement> {
   }
 }
 
-export class Path extends GraphicElement {
+export class Path extends SvgGraphicElement {
   private _strokeColor = 'black';
   private _strokeWidth = 2;
 
