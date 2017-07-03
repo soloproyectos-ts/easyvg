@@ -1,5 +1,6 @@
 /// <reference path="../typings/index" />
 
+import {Transformable} from 'matrix';
 import {Point, Transformation} from 'matrix2';
 
 export class SvgElement<Type extends SVGElement> {
@@ -36,13 +37,21 @@ export class SvgElement<Type extends SVGElement> {
   }
 }
 
-export class SvgGraphicElement extends SvgElement<SVGGraphicsElement> {
+export class SvgGraphicElement
+	extends SvgElement<SVGGraphicsElement>
+	implements Transformable {
 
   get transformation(): Transformation {
     let t = this.nativeElement.getCTM();
 
     return Transformation.createFromValues(t.a, t.b, t.c, t.d, t.e, t.f);
   }
+
+	transform(t:Transformation): Transformable {
+		this.setAttr('transform', t.toString());
+
+		return this;
+	}
 }
 
 export class SvgPath extends SvgGraphicElement {
