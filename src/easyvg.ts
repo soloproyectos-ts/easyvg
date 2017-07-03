@@ -82,4 +82,12 @@ export class SvgPath extends SvgGraphicElement {
 
     return this;
   }
+
+	close(): SvgPath {
+		this.setAttr(
+      'd', [this.getAttr('d') || '', 'Z'].join(' ')
+    );
+
+		return this;
+	}
 }
