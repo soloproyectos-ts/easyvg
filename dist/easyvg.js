@@ -50,6 +50,10 @@ define(["require", "exports", "matrix2"], function (require, exports, matrix2_1)
             enumerable: true,
             configurable: true
         });
+        SvgGraphicElement.prototype.transform = function (t) {
+            this.setAttr('transform', t.toString());
+            return this;
+        };
         return SvgGraphicElement;
     }(SvgElement));
     exports.SvgGraphicElement = SvgGraphicElement;

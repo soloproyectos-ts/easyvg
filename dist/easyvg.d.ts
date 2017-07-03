@@ -1,3 +1,4 @@
+import { Transformable } from 'matrix';
 import { Point, Transformation } from 'matrix2';
 export declare class SvgElement<Type extends SVGElement> {
     readonly nativeElement: Type;
@@ -8,8 +9,9 @@ export declare class SvgElement<Type extends SVGElement> {
     setAttr(name: string, value: any): SvgElement<Type>;
     append(element: SvgElement<SVGElement>): void;
 }
-export declare class SvgGraphicElement extends SvgElement<SVGGraphicsElement> {
+export declare class SvgGraphicElement extends SvgElement<SVGGraphicsElement> implements Transformable {
     readonly transformation: Transformation;
+    transform(t: Transformation): Transformable;
 }
 export declare class SvgPath extends SvgGraphicElement {
     private _strokeColor;
