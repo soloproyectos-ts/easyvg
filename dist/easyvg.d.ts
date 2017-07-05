@@ -19,4 +19,5 @@ export declare class SvgPath extends SvgGraphicElement {
     constructor();
     moveTo(value: Point): SvgPath;
     lineTo(value: Point): SvgPath;
+    close(): SvgPath;
 }

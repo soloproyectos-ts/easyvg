@@ -44,14 +44,23 @@ define(["require", "exports", "matrix2"], function (require, exports, matrix2_1)
         }
         Object.defineProperty(SvgGraphicElement.prototype, "transformation", {
             get: function () {
-                var t = this.nativeElement.getCTM();
-                return matrix2_1.Transformation.createFromValues(t.a, t.b, t.c, t.d, t.e, t.f);
+                var style = window.getComputedStyle(this.nativeElement, null);
+                var value = style.getPropertyValue('transform');
+                var matches = value.match(/^matrix\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,]+)\)$/);
+                var ret = new matrix2_1.Transformation();
+                if (matches !== null) {
+                    var _a = matches
+                        .filter(function (elem, index) { return index > 0; })
+                        .map(function (match) { return parseFloat(match); }), a = _a[0], b = _a[1], c = _a[2], d = _a[3], e = _a[4], f = _a[5];
+                    ret = matrix2_1.Transformation.createFromValues(a, b, c, d, e, f);
+                }
+                return ret;
             },
             enumerable: true,
             configurable: true
         });
         SvgGraphicElement.prototype.transform = function (t) {
-            this.setAttr('transform', t.toString());
+            this.setAttr('transform', this.transformation.transform(t).toString());
             return this;
         };
         return SvgGraphicElement;
@@ -75,6 +84,10 @@ define(["require", "exports", "matrix2"], function (require, exports, matrix2_1)
         };
         SvgPath.prototype.lineTo = function (value) {
             this.setAttr('d', [this.getAttr('d') || '', "L" + value.x + " " + value.y].join(' '));
+            return this;
+        };
+        SvgPath.prototype.close = function () {
+            this.setAttr('d', [this.getAttr('d') || '', 'Z'].join(' '));
             return this;
         };
         return SvgPath;
