@@ -42,13 +42,26 @@ export class SvgGraphicElement
 	implements Transformable {
 
   get transformation(): Transformation {
-    let t = this.nativeElement.getCTM();
+		let style = window.getComputedStyle(this.nativeElement, null);
+		let value = style.getPropertyValue('transform');
+		let matches = value.match(
+			/^matrix\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,]+)\)$/
+		);
+		let ret = new Transformation();
 
-    return Transformation.createFromValues(t.a, t.b, t.c, t.d, t.e, t.f);
+		if (matches !== null) {
+			let [a, b, c, d, e, f] = matches
+				.filter((elem, index) => index > 0)
+				.map((match) => parseFloat(match));
+
+			ret = Transformation.createFromValues(a, b, c, d, e, f);
+		}
+
+		return ret;
   }
 
 	transform(t:Transformation): Transformable {
-		this.setAttr('transform', t.toString());
+		this.setAttr('transform', this.transformation.transform(t).toString());
 
 		return this;
 	}
