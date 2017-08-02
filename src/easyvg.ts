@@ -32,6 +32,12 @@ export class SvgElement<Type extends SVGElement> {
     return this;
   }
 
+	removeAttr(name: string): SvgElement<Type> {
+		this.nativeElement.removeAttributeNS(null, name);
+
+		return this;
+	}
+
   append(element: SvgElement<SVGElement>): void {
     this.nativeElement.appendChild(element.nativeElement);
   }
@@ -59,6 +65,14 @@ export class SvgGraphicElement
 
 		return ret;
   }
+
+	set transformation(value: Transformation) {
+		if (value === undefined || value === null) {
+			this.removeAttr('transform');
+		} else {
+			this.setAttr('transform', value.toString());
+		}
+	}
 
 	transform(t:Transformation): Transformable {
 		this.setAttr('transform', this.transformation.transform(t).toString());
