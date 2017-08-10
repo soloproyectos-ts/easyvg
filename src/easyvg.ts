@@ -85,14 +85,6 @@ export class SvgGraphicElement
     });
   }
 
-  onStopDragging(listener: (final: Point) => void) {
-    let self = this;
-
-    document.addEventListener('mouseup', function (event) {
-      listener.apply(self, [new Point(event.offsetX, event.offsetY)]);
-    });
-  }
-
   get transformation(): Transformation {
 		let style = window.getComputedStyle(this.nativeElement, null);
 		let value = style.getPropertyValue('transform');
