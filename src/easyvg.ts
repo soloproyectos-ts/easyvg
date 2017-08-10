@@ -46,6 +46,52 @@ export class SvgElement<Type extends SVGElement> {
 export class SvgGraphicElement
 	extends SvgElement<SVGGraphicsElement>
 	implements Transformable {
+	private _initPoint: Point;
+
+	constructor(
+		target: string | SVGGraphicsElement, attributes: {[key: string]: any} = {}
+	) {
+		super(target, attributes);
+
+		// initializes the dragging
+    let self = this;
+    this.nativeElement.addEventListener('mousedown', function (event) {
+      self._initPoint = new Point(event.offsetX, event.offsetY);
+    });
+    for (let eventName of ['mouseup', 'mouseleave', 'blur']) {
+      document.addEventListener(eventName, function (event) {
+        self._initPoint = null;
+      });
+    }
+	}
+
+	onStartDragging(listener: (init: Point) => void) {
+    let self = this;
+
+    this.nativeElement.addEventListener('mousedown', function (event) {
+      listener.apply(self, [new Point(event.offsetX, event.offsetY)]);
+    });
+  }
+
+  onDragging(listener: (init: Point, final: Point) => void) {
+    let self = this;
+
+    document.addEventListener('mousemove', function (event) {
+      if (self._initPoint != null) {
+        let finalPoint = new Point(event.offsetX, event.offsetY);
+
+        listener.apply(self, [self._initPoint, finalPoint]);
+      }
+    });
+  }
+
+  onStopDragging(listener: (final: Point) => void) {
+    let self = this;
+
+    document.addEventListener('mouseup', function (event) {
+      listener.apply(self, [new Point(event.offsetX, event.offsetY)]);
+    });
+  }
 
   get transformation(): Transformation {
 		let style = window.getComputedStyle(this.nativeElement, null);
