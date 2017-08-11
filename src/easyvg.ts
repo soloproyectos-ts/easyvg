@@ -1,7 +1,7 @@
 /// <reference path="../typings/index" />
 
 import {Transformable} from 'matrix';
-import {Point, Transformation} from 'matrix2';
+import {Point, Vector, Transformation} from 'matrix2';
 
 export class SvgElement<Type extends SVGElement> {
 	readonly nativeElement: Type;
@@ -56,7 +56,7 @@ export class SvgGraphicElement
 		// initializes the dragging
     let self = this;
     this.nativeElement.addEventListener('mousedown', function (event) {
-      self._initPoint = new Point(event.offsetX, event.offsetY);
+      self._initPoint = new Vector(event.offsetX, event.offsetY);
     });
     for (let eventName of ['mouseup', 'mouseleave', 'blur']) {
       document.addEventListener(eventName, function (event) {
@@ -69,7 +69,7 @@ export class SvgGraphicElement
     let self = this;
 
     this.nativeElement.addEventListener('mousedown', function (event) {
-      listener.apply(self, [new Point(event.offsetX, event.offsetY)]);
+      listener.apply(self, [new Vector(event.offsetX, event.offsetY)]);
     });
   }
 
@@ -78,7 +78,7 @@ export class SvgGraphicElement
 
     document.addEventListener('mousemove', function (event) {
       if (self._initPoint != null) {
-        let finalPoint = new Point(event.offsetX, event.offsetY);
+        let finalPoint = new Vector(event.offsetX, event.offsetY);
 
         listener.apply(self, [self._initPoint, finalPoint]);
       }
