@@ -65,6 +65,7 @@ export class SvgGraphicElement
     }
 	}
 
+	// TODO: create a separate package for dragging capabilities
 	onStartDragging(listener: (init: Point) => void) {
     let self = this;
 
@@ -73,6 +74,7 @@ export class SvgGraphicElement
     });
   }
 
+	// TODO: onStopDragging is missing
   onDragging(listener: (init: Point, final: Point) => void) {
     let self = this;
 
