@@ -141,7 +141,18 @@ export class SvgGraphicElement
 		return this.transform(new Transformation().rotate(angle));
 	}
 
-	scale(value: number|Vector): SvgGraphicElement {
+	scale(value: number|Vector, params?: {center: boolean|Point}): SvgGraphicElement {
+		if (params !== undefined) {
+			let center = params.center instanceof Vector
+				? params.center
+				: this._getCenter();
+
+			return this
+				.translate(center.opposite())
+				.scale(value)
+				.translate(center);
+		}
+
 		return this.transform(new Transformation().scale(value));
 	}
 
