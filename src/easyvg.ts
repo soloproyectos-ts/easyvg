@@ -154,8 +154,19 @@ export class SvgGraphicElement
 		);
 	}
 
-	skew(value: number|Vector): SvgGraphicElement {
-		return this.transform(new Transformation().skew(value));
+	skew(
+		value: number|Vector, params?: {center: boolean|Point}
+	): SvgGraphicElement {
+		let center = params !== undefined
+			? params.center instanceof Vector? params.center: this._getCenter()
+			: new Vector(0, 0);
+
+		return this.transform(
+			new Transformation()
+				.translate(center.opposite())
+				.skew(value)
+				.translate(center)
+		);
 	}
 
 	// Gets the center from the parent's reference system.
