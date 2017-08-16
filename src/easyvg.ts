@@ -114,7 +114,7 @@ export class SvgGraphicElement
 		}
 	}
 
-	transform(t:Transformation): Transformable {
+	transform(t:Transformation): SvgGraphicElement {
 		this.setAttr('transform', this.transformation.transform(t).toString());
 
 		return this;
@@ -132,27 +132,21 @@ export class SvgGraphicElement
 				? params.center
 				: this._getCenter();
 
-			this
+			return this
 				.translate(center.opposite())
 				.rotate(angle)
 				.translate(center);
 		}
 
-		this.transform(new Transformation().rotate(angle));
-
-		return this;
+		return this.transform(new Transformation().rotate(angle));
 	}
 
 	scale(value: number|Vector): SvgGraphicElement {
-		this.transform(new Transformation().scale(value));
-
-		return this;
+		return this.transform(new Transformation().scale(value));
 	}
 
 	skew(value: number|Vector): SvgGraphicElement {
-		this.transform(new Transformation().skew(value));
-
-		return this;
+		return this.transform(new Transformation().skew(value));
 	}
 
 	private _getCenter(): Point {
