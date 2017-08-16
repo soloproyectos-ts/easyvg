@@ -126,7 +126,18 @@ export class SvgGraphicElement
 		return this;
 	}
 
-	rotate(angle: number): SvgGraphicElement {
+	rotate(angle: number, params?: {center: boolean|Point}): SvgGraphicElement {
+		if (params !== undefined) {
+			let center = params.center instanceof Vector
+				? params.center
+				: this._getCenter();
+
+			this
+				.translate(center.opposite())
+				.rotate(angle)
+				.translate(center);
+		}
+
 		this.transform(new Transformation().rotate(angle));
 
 		return this;
@@ -142,6 +153,12 @@ export class SvgGraphicElement
 		this.transform(new Transformation().skew(value));
 
 		return this;
+	}
+
+	private _getCenter(): Point {
+		let box = this.nativeElement.getBBox();
+
+		return new Vector(box.x + box.width / 2, box.y + box.height / 2);
 	}
 }
 
