@@ -119,6 +119,7 @@ export class SvgGraphicElement
 	}
 }
 
+// TODO: move this class to the transformer package
 export class SvgPath extends SvgGraphicElement {
   private _strokeColor = 'black';
   private _strokeWidth = 2;
