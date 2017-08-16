@@ -127,33 +127,31 @@ export class SvgGraphicElement
 	}
 
 	rotate(angle: number, params?: {center: boolean|Point}): SvgGraphicElement {
-		if (params !== undefined) {
-			let center = params.center instanceof Vector
-				? params.center
-				: this._getCenter();
+		let center = params !== undefined
+			? params.center instanceof Vector? params.center: this._getCenter()
+			: new Vector(0, 0);
 
-			return this
+		return this.transform(
+			new Transformation()
 				.translate(center.opposite())
 				.rotate(angle)
-				.translate(center);
-		}
-
-		return this.transform(new Transformation().rotate(angle));
+				.translate(center)
+		);
 	}
 
-	scale(value: number|Vector, params?: {center: boolean|Point}): SvgGraphicElement {
-		if (params !== undefined) {
-			let center = params.center instanceof Vector
-				? params.center
-				: this._getCenter();
+	scale(
+		value: number|Vector, params?: {center: boolean|Point}
+	): SvgGraphicElement {
+		let center = params !== undefined
+			? params.center instanceof Vector? params.center: this._getCenter()
+			: new Vector(0, 0);
 
-			return this
+		return this.transform(
+			new Transformation()
 				.translate(center.opposite())
 				.scale(value)
-				.translate(center);
-		}
-
-		return this.transform(new Transformation().scale(value));
+				.translate(center)
+		);
 	}
 
 	skew(value: number|Vector): SvgGraphicElement {
