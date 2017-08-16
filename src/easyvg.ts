@@ -119,6 +119,30 @@ export class SvgGraphicElement
 
 		return this;
 	}
+
+	translate(value: Vector): SvgGraphicElement {
+		this.transform(new Transformation().translate(value));
+
+		return this;
+	}
+
+	rotate(angle: number): SvgGraphicElement {
+		this.transform(new Transformation().rotate(angle));
+
+		return this;
+	}
+
+	scale(value: number|Vector): SvgGraphicElement {
+		this.transform(new Transformation().scale(value));
+
+		return this;
+	}
+
+	skew(value: number|Vector): SvgGraphicElement {
+		this.transform(new Transformation().skew(value));
+
+		return this;
+	}
 }
 
 // TODO: move this class to the transformer package
