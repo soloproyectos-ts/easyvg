@@ -126,10 +126,8 @@ export class SvgGraphicElement
 		return this;
 	}
 
-	rotate(angle: number, params?: {center: boolean|Point}): SvgGraphicElement {
-		let center = params !== undefined
-			? params.center instanceof Vector? params.center: this._getCenter()
-			: new Vector(0, 0);
+	rotate(angle: number, params?: {center: boolean}): SvgGraphicElement {
+		let center = params !== undefined? this._getCenter(): new Vector(0, 0);
 
 		return this.transform(
 			new Transformation()
@@ -139,12 +137,8 @@ export class SvgGraphicElement
 		);
 	}
 
-	scale(
-		value: number|Vector, params?: {center: boolean|Point}
-	): SvgGraphicElement {
-		let center = params !== undefined
-			? params.center instanceof Vector? params.center: this._getCenter()
-			: new Vector(0, 0);
+	scale(value: number|Vector, params?: {center: boolean}): SvgGraphicElement {
+		let center = params !== undefined? this._getCenter(): new Vector(0, 0);
 
 		return this.transform(
 			new Transformation()
@@ -154,12 +148,8 @@ export class SvgGraphicElement
 		);
 	}
 
-	skew(
-		value: number|Vector, params?: {center: boolean|Point}
-	): SvgGraphicElement {
-		let center = params !== undefined
-			? params.center instanceof Vector? params.center: this._getCenter()
-			: new Vector(0, 0);
+	skew(value: number|Vector, params?: {center: boolean}): SvgGraphicElement {
+		let center = params !== undefined? this._getCenter(): new Vector(0, 0);
 
 		return this.transform(
 			new Transformation()
