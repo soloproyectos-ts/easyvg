@@ -149,7 +149,7 @@ export class SvgGraphicElement
 		return this.transform(new Transformation().skew(value));
 	}
 
-	// Gets the center from the canvas reference system.
+	// Gets the center from the parent's reference system.
 	private _getCenter(): Point {
 		let box = this.nativeElement.getBBox();
 		let center = new Vector(box.x + box.width / 2, box.y + box.height / 2);
