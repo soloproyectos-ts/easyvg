@@ -55,7 +55,7 @@ export class SvgGraphicElement
 
 		// initializes the dragging
     let self = this;
-		
+
     this.nativeElement.addEventListener('mousedown', function (event) {
 			self._isDragging = true;
     });
@@ -133,7 +133,9 @@ export class SvgGraphicElement
 	}
 
 	rotate(angle: number, params?: {center: boolean}): SvgGraphicElement {
-		let center = params !== undefined? this._getCenter(): new Vector(0, 0);
+		let center = params !== undefined && params.center
+			? this._getCenter()
+			: new Vector(0, 0);
 
 		return this.transform(
 			new Transformation()
@@ -144,7 +146,9 @@ export class SvgGraphicElement
 	}
 
 	scale(value: number|Vector, params?: {center: boolean}): SvgGraphicElement {
-		let center = params !== undefined? this._getCenter(): new Vector(0, 0);
+		let center = params !== undefined && params.center
+			? this._getCenter()
+			: new Vector(0, 0);
 
 		return this.transform(
 			new Transformation()
@@ -155,7 +159,9 @@ export class SvgGraphicElement
 	}
 
 	skew(value: number|Vector, params?: {center: boolean}): SvgGraphicElement {
-		let center = params !== undefined? this._getCenter(): new Vector(0, 0);
+		let center = params !== undefined && params.center
+			? this._getCenter()
+			: new Vector(0, 0);
 
 		return this.transform(
 			new Transformation()
