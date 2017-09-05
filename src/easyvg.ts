@@ -56,7 +56,7 @@ export class SvgGraphicElement
 		// initializes the dragging
     let self = this;
     this.nativeElement.addEventListener('mousedown', function (event) {
-      self._initPoint = new Vector(event.offsetX, event.offsetY);
+      self._initPoint = new Vector(event.clientX, event.clientY);
     });
     for (let eventName of ['mouseup', 'mouseleave', 'blur']) {
       document.addEventListener(eventName, function (event) {
@@ -70,7 +70,7 @@ export class SvgGraphicElement
     let self = this;
 
     this.nativeElement.addEventListener('mousedown', function (event) {
-      listener.apply(self, [new Vector(event.offsetX, event.offsetY)]);
+      listener.apply(self, [new Vector(event.clientX, event.clientY)]);
     });
   }
 
@@ -80,7 +80,7 @@ export class SvgGraphicElement
 
     document.addEventListener('mousemove', function (event) {
       if (self._initPoint != null) {
-        let finalPoint = new Vector(event.offsetX, event.offsetY);
+        let finalPoint = new Vector(event.clientX, event.clientY);
 
         listener.apply(self, [self._initPoint, finalPoint]);
       }
