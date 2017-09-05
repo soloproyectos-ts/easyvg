@@ -70,7 +70,10 @@ export class SvgGraphicElement
     let self = this;
 
     this.nativeElement.addEventListener('mousedown', function (event) {
-      listener.apply(self, [new Vector(event.clientX, event.clientY)]);
+			let t = self._getClientTransformation();
+			let p = new Vector(event.clientX, event.clientY).transform(t);
+
+      listener.apply(self, [p]);
     });
   }
 
@@ -80,9 +83,10 @@ export class SvgGraphicElement
 
     document.addEventListener('mousemove', function (event) {
       if (self._initPoint != null) {
-        let finalPoint = new Vector(event.clientX, event.clientY);
+				let t = self._getClientTransformation();
+        let finalPoint = new Vector(event.clientX, event.clientY).transform(t);
 
-        listener.apply(self, [self._initPoint, finalPoint]);
+        listener.apply(self, [self._initPoint.transform(t), finalPoint]);
       }
     });
   }
@@ -165,6 +169,15 @@ export class SvgGraphicElement
 		let center = new Vector(box.x + box.width / 2, box.y + box.height / 2);
 
 		return center.transform(this.transformation);
+	}
+
+	private _getClientTransformation(): Transformation {
+		let canvas = this.nativeElement.ownerSVGElement;
+		let ctm = canvas.getScreenCTM();
+
+    return Transformation.createFromValues(
+      ctm.a, ctm.b, ctm.c, ctm.d, ctm.e, ctm.f
+    ).inverse();
 	}
 }
 
