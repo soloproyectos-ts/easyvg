@@ -138,10 +138,7 @@ export class SvgGraphicElement
 			: new Vector(0, 0);
 
 		return this.transform(
-			new Transformation()
-				.translate(center.opposite())
-				.rotate(angle)
-				.translate(center)
+			new Transformation().rotate(angle, {center: center})
 		);
 	}
 
@@ -151,10 +148,7 @@ export class SvgGraphicElement
 			: new Vector(0, 0);
 
 		return this.transform(
-			new Transformation()
-				.translate(center.opposite())
-				.scale(value)
-				.translate(center)
+			new Transformation().scale(value, {center: center})
 		);
 	}
 
@@ -164,10 +158,7 @@ export class SvgGraphicElement
 			: new Vector(0, 0);
 
 		return this.transform(
-			new Transformation()
-				.translate(center.opposite())
-				.skew(value)
-				.translate(center)
+			new Transformation().skew(value, {center: center})
 		);
 	}
 
