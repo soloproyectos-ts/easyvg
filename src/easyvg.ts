@@ -46,7 +46,7 @@ export class SvgElement<Type extends SVGElement> {
 export class SvgGraphicElement
 	extends SvgElement<SVGGraphicsElement>
 	implements Transformable {
-	private _initPoint: Point;
+	private _isDragging: boolean;
 
 	constructor(
 		target: string | SVGGraphicsElement, attributes: {[key: string]: any} = {}
@@ -55,12 +55,14 @@ export class SvgGraphicElement
 
 		// initializes the dragging
     let self = this;
+		
     this.nativeElement.addEventListener('mousedown', function (event) {
-      self._initPoint = new Vector(event.clientX, event.clientY);
+			self._isDragging = true;
     });
+
     for (let eventName of ['mouseup', 'mouseleave', 'blur']) {
       document.addEventListener(eventName, function (event) {
-        self._initPoint = null;
+				self._isDragging = false;
       });
     }
 	}
@@ -78,15 +80,15 @@ export class SvgGraphicElement
   }
 
 	// TODO: onStopDragging is missing
-  onDragging(listener: (init: Point, final: Point) => void) {
+  onDragging(listener: (p: Point) => void) {
     let self = this;
 
     document.addEventListener('mousemove', function (event) {
-      if (self._initPoint != null) {
+      if (self._isDragging) {
 				let t = self._getClientTransformation();
-        let finalPoint = new Vector(event.clientX, event.clientY).transform(t);
+        let p = new Vector(event.clientX, event.clientY).transform(t);
 
-        listener.apply(self, [self._initPoint.transform(t), finalPoint]);
+        listener.apply(self, [p]);
       }
     });
   }
