@@ -50,15 +50,17 @@ export class SvgElement<Type extends SVGElement> {
 export class SvgGraphicElement
 	extends SvgElement<SVGGraphicsElement>
 	implements Transformable {
-	private _isDragging: boolean;
+	private _isDraggingInit: boolean = false;
+	private _isDragging: boolean = false;
 
 	constructor(
 		target: string | SVGGraphicsElement, attributes: {[key: string]: any} = {}
 	) {
 		super(target, attributes);
+	}
 
-		// initializes the dragging
-    let self = this;
+	private _initDragging() {
+		let self = this;
 
     this.nativeElement.addEventListener('mousedown', function (event) {
 			self._isDragging = true;
@@ -69,11 +71,17 @@ export class SvgGraphicElement
 				self._isDragging = false;
       });
     }
+
+		this._isDraggingInit = true;
 	}
 
 	// TODO: create a separate package for dragging capabilities
 	onStartDragging(listener: (init: Point) => void) {
     let self = this;
+
+		if (!this._isDraggingInit) {
+			this._initDragging();
+		}
 
     this.nativeElement.addEventListener('mousedown', function (event) {
 			let t = self._getClientTransformation();
@@ -86,6 +94,10 @@ export class SvgGraphicElement
 	// TODO: onStopDragging is missing
   onDragging(listener: (p: Point) => void) {
     let self = this;
+
+		if (!this._isDraggingInit) {
+			this._initDragging();
+		}
 
     document.addEventListener('mousemove', function (event) {
       if (self._isDragging) {
