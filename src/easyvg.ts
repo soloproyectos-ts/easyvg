@@ -60,7 +60,6 @@ export class SvgGraphicElement
 		super(target, attributes);
 	}
 
-	// TODO: create a separate package for dragging capabilities
 	onStartDragging(listener: (init: Point) => void): SvgGraphicElement {
     let self = this;
 
