@@ -59,33 +59,6 @@ export class SvgGraphicElement
 		super(target, attributes);
 	}
 
-	private _initDragging() {
-		let self = this;
-
-    this.nativeElement.addEventListener('mousedown', function (event) {
-			self._isDragging = true;
-    });
-
-    for (let eventName of ['mouseup', 'mouseleave', 'blur']) {
-      document.addEventListener(eventName, function (event) {
-				if (self._isDragging) {
-					let t = self._getClientTransformation();
-					let p = event instanceof MouseEvent
-						? new Vector(event.clientX, event.clientY).transform(t)
-						: null;
-
-					self.nativeElement.dispatchEvent(
-						new CustomEvent('stopdragging', {detail: p})
-					);
-				}
-
-				self._isDragging = false;
-      });
-    }
-
-		this._isDraggingInit = true;
-	}
-
 	// TODO: create a separate package for dragging capabilities
 	onStartDragging(listener: (init: Point) => void): SvgGraphicElement {
     let self = this;
@@ -129,7 +102,7 @@ export class SvgGraphicElement
 		if (!this._isDraggingInit) {
 			this._initDragging();
 		}
-		
+
 		this.nativeElement.addEventListener('stopdragging', function (event: CustomEvent) {
 			listener.apply(self, [event.detail]);
 		});
@@ -210,6 +183,34 @@ export class SvgGraphicElement
 		let box = this.nativeElement.getBBox();
 
     return {x: box.x, y: box.y, width: box.width, height: box.height};
+	}
+
+	// Initializes the dragging
+	private _initDragging() {
+		let self = this;
+
+    this.nativeElement.addEventListener('mousedown', function (event) {
+			self._isDragging = true;
+    });
+
+    for (let eventName of ['mouseup', 'mouseleave', 'blur']) {
+      document.addEventListener(eventName, function (event) {
+				if (self._isDragging) {
+					let t = self._getClientTransformation();
+					let p = event instanceof MouseEvent
+						? new Vector(event.clientX, event.clientY).transform(t)
+						: null;
+
+					self.nativeElement.dispatchEvent(
+						new CustomEvent('stopdragging', {detail: p})
+					);
+				}
+
+				self._isDragging = false;
+      });
+    }
+
+		this._isDraggingInit = true;
 	}
 
 	// Gets the center from the parent's reference system.
