@@ -162,9 +162,15 @@ export class SvgGraphicElement
 		);
 	}
 
+	getBoundingBox(): {x: number, y: number, width: number, height: number} {
+		let box = this.nativeElement.getBBox();
+
+    return {x: box.x, y: box.y, width: box.width, height: box.height};
+	}
+
 	// Gets the center from the parent's reference system.
 	private _getCenter(): Point {
-		let box = this.nativeElement.getBBox();
+		let box = this.getBoundingBox();
 		let center = new Vector(box.x + box.width / 2, box.y + box.height / 2);
 
 		return center.transform(this.transformation);
