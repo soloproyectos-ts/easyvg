@@ -124,6 +124,12 @@ export class SvgGraphicElement
   }
 
 	onStopDragging(listener: (p: Point) => void): SvgGraphicElement {
+		let self = this;
+
+		if (!this._isDraggingInit) {
+			this._initDragging();
+		}
+		
 		this.nativeElement.addEventListener('stopdragging', function (event: CustomEvent) {
 			listener.apply(self, [event.detail]);
 		});
