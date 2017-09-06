@@ -76,7 +76,7 @@ export class SvgGraphicElement
 	}
 
 	// TODO: create a separate package for dragging capabilities
-	onStartDragging(listener: (init: Point) => void) {
+	onStartDragging(listener: (init: Point) => void): SvgGraphicElement {
     let self = this;
 
 		if (!this._isDraggingInit) {
@@ -89,10 +89,12 @@ export class SvgGraphicElement
 
       listener.apply(self, [p]);
     });
+
+		return this;
   }
 
 	// TODO: onStopDragging is missing
-  onDragging(listener: (p: Point) => void) {
+  onDragging(listener: (p: Point) => void): SvgGraphicElement {
     let self = this;
 
 		if (!this._isDraggingInit) {
@@ -107,6 +109,8 @@ export class SvgGraphicElement
         listener.apply(self, [p]);
       }
     });
+
+		return this;
   }
 
   get transformation(): Transformation {
