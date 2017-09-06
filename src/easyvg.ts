@@ -50,6 +50,7 @@ export class SvgElement<Type extends SVGElement> {
 export class SvgGraphicElement
 	extends SvgElement<SVGGraphicsElement>
 	implements Transformable {
+	private _stopDraggingEventName: string;
 	private _isDraggingInit: boolean = false;
 	private _isDragging: boolean = false;
 
@@ -103,9 +104,12 @@ export class SvgGraphicElement
 			this._initDragging();
 		}
 
-		this.nativeElement.addEventListener('stopdragging', function (event: CustomEvent) {
-			listener.apply(self, [event.detail]);
-		});
+		this.nativeElement.addEventListener(
+				self._stopDraggingEventName,
+				function (event: CustomEvent) {
+					listener.apply(self, [event.detail]);
+				}
+		);
 
 		return this;
 	}
@@ -185,9 +189,31 @@ export class SvgGraphicElement
     return {x: box.x, y: box.y, width: box.width, height: box.height};
 	}
 
+	// Generates a random ID.
+	//
+	// Thanks to: https://stackoverflow.com/a/105074/1704895
+	private _generateId(): string {
+	  let t = (repeat: number = 1) => {
+			let ret = [];
+
+			for (let i = 0; i < repeat; i++) {
+				ret.push(Math
+					.floor((1 + Math.random()) * 0x10000)
+		      .toString(16)
+		      .substring(1));
+			}
+
+			return ret.join('');
+	  }
+
+	  return t(2) + '_' + t() + '_' + t() + '_' + t() + '_' + t(3);
+	}
+
 	// Initializes the dragging
 	private _initDragging() {
 		let self = this;
+
+		this._stopDraggingEventName = `stopdragging_${this._generateId()}`;
 
     this.nativeElement.addEventListener('mousedown', function (event) {
 			self._isDragging = true;
@@ -202,7 +228,7 @@ export class SvgGraphicElement
 						: null;
 
 					self.nativeElement.dispatchEvent(
-						new CustomEvent('stopdragging', {detail: p})
+						new CustomEvent(self._stopDraggingEventName, {detail: p})
 					);
 				}
 
