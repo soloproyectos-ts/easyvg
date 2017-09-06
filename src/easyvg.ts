@@ -22,6 +22,10 @@ export class SvgElement<Type extends SVGElement> {
     }
   }
 
+	get ownerElement(): SvgGraphicElement {
+		return new SvgGraphicElement(this.nativeElement.ownerSVGElement);
+	}
+
   getAttr(name: string): string {
     return this.nativeElement.getAttributeNS(null, name);
   }
@@ -177,8 +181,8 @@ export class SvgGraphicElement
 	}
 
 	private _getClientTransformation(): Transformation {
-		let canvas = this.nativeElement.ownerSVGElement;
-		let ctm = canvas.getScreenCTM();
+		let canvas = this.ownerElement;
+		let ctm = canvas.nativeElement.getScreenCTM();
 
     return Transformation.createFromValues(
       ctm.a, ctm.b, ctm.c, ctm.d, ctm.e, ctm.f
