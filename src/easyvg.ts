@@ -68,6 +68,17 @@ export class SvgGraphicElement
 
     for (let eventName of ['mouseup', 'mouseleave', 'blur']) {
       document.addEventListener(eventName, function (event) {
+				if (self._isDragging) {
+					let t = self._getClientTransformation();
+					let p = event instanceof MouseEvent
+						? new Vector(event.clientX, event.clientY).transform(t)
+						: null;
+
+					self.nativeElement.dispatchEvent(
+						new CustomEvent('stopdragging', {detail: p})
+					);
+				}
+
 				self._isDragging = false;
       });
     }
@@ -93,7 +104,6 @@ export class SvgGraphicElement
 		return this;
   }
 
-	// TODO: onStopDragging is missing
   onDragging(listener: (p: Point) => void): SvgGraphicElement {
     let self = this;
 
@@ -112,6 +122,14 @@ export class SvgGraphicElement
 
 		return this;
   }
+
+	onStopDragging(listener: (p: Point) => void): SvgGraphicElement {
+		this.nativeElement.addEventListener('stopdragging', function (event: CustomEvent) {
+			listener.apply(self, [event.detail]);
+		});
+
+		return this;
+	}
 
   get transformation(): Transformation {
 		let style = window.getComputedStyle(this.nativeElement, null);
